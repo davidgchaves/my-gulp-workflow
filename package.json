@@ -1,0 +1,7 @@
+{
+  "name": "my-gulp-workflow",
+  "version": "0.0.1",
+  "description": "A template for Node/JS app development with Gulp and Browserify",
+  "author": "David G. Chaves <davidgchaves@gmail.com>",
+  "license": "ISC"
+}
