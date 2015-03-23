@@ -5,6 +5,7 @@
   "author": "David G. Chaves <davidgchaves@gmail.com>",
   "license": "ISC",
   "devDependencies": {
+    "browserify": "^9.0.3",
     "gulp": "^3.8.11"
   }
 }
