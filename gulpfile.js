@@ -40,6 +40,17 @@ gulp.task('browserify-test', ['lint-test'], function() {
     .pipe(rename('client-test.js'))
     .pipe(gulp.dest('build'));
 });
+
+// Test Tasks
+gulp.task('test', ['lint-test', 'browserify-test'], function() {
+  return gulp.src('test/client/runner.html')
+    .pipe(phantomjs({ interface: 'bdd', reporter: 'spec' }));
+});
+
+gulp.task('watch', function() {
+  gulp.watch('client/**/*.js', ['browserify-client', 'test']);
+  gulp.watch('test/client/**/*.js', ['test']);
+});
  
 gulp.task('default', function() {});
 
