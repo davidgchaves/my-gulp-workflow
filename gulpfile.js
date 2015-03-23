@@ -1,5 +1,6 @@
 var gulp       = require('gulp'),
     rename     = require('gulp-rename'),
+    transform  = require('vinyl-transform'),
     jshint     = require('gulp-jshint'),
     browserify = require('browserify'),
     phantomjs  = require('gulp-mocha-phantomjs');

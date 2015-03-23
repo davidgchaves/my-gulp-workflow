@@ -11,6 +11,7 @@
     "gulp-jshint": "^1.9.4",
     "gulp-mocha-phantomjs": "^0.5.3",
     "gulp-rename": "^1.2.0",
-    "mocha": "^2.2.1"
+    "mocha": "^2.2.1",
+    "vinyl-transform": "^1.0.0"
   }
 }
