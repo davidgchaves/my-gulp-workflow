@@ -1,9 +1,19 @@
-var gulp       = require('gulp'),
-    rename     = require('gulp-rename'),
-    transform  = require('vinyl-transform'),
-    jshint     = require('gulp-jshint'),
-    browserify = require('browserify'),
-    phantomjs  = require('gulp-mocha-phantomjs');
+'use strict';
+
+// Gulp Dependencies
+var gulp       = require('gulp');
+var rename     = require('gulp-rename');
+var sourcemaps = require('gulp-sourcemaps');
+var transform  = require('vinyl-transform');
+
+// Build Dependencies
+var browserify = require('browserify');
+
+// Dev Dependencies
+var jshint = require('gulp-jshint');
+
+// Test Dependencies
+var phantomjs = require('gulp-mocha-phantomjs');
 
 // Lint Tasks
 gulp.task('lint-client', function() {
@@ -29,13 +39,15 @@ var browserified = transform(function(filename) {
 gulp.task('browserify-client', ['lint-client'], function() {
   return gulp.src('client/index.js')
     .pipe(browserified)
-    .pipe(rename('client.js'))
+    .pipe(sourcemaps.init({ loadMaps: true }))
+      .pipe(rename('client.js'))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('build'))
     .pipe(gulp.dest('public/javascripts'));
 });
 
 gulp.task('browserify-test', ['lint-test'], function() {
-  return gulp.src('test/client/initial_spec.js')
+  return gulp.src('test/client/**/*.js')
     .pipe(browserified)
     .pipe(rename('client-test.js'))
     .pipe(gulp.dest('build'));
