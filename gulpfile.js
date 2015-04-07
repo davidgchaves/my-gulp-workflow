@@ -4,7 +4,8 @@
 var gulp       = require('gulp');
 var rename     = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
-var transform  = require('vinyl-transform');
+var source     = require('vinyl-source-stream');
+var buffer     = require('vinyl-buffer');
 
 // Build Dependencies
 var browserify = require('browserify');
@@ -29,16 +30,11 @@ gulp.task('lint-test', function() {
 });
 
 // Browserify Tasks
-
-// browserified transforms a regular node stream to a gulp (buffered vinyl) stream
-var browserified = transform(function(filename) {
-  var b = browserify({ entries: filename, debug: true, insertGlobals: true });
-  return b.bundle();
-});
-
 gulp.task('browserify-client', ['lint-client'], function() {
-  return gulp.src('client/index.js')
-    .pipe(browserified)
+  var b = browserify({ entries: 'client/index.js', debug: true });
+  return b.bundle()
+    .pipe(source('client/index.js'))
+    .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
       .pipe(rename('client.js'))
     .pipe(sourcemaps.write('./'))
@@ -47,14 +43,16 @@ gulp.task('browserify-client', ['lint-client'], function() {
 });
 
 gulp.task('browserify-test', ['lint-test'], function() {
-  return gulp.src('test/client/**/*.js')
-    .pipe(browserified)
+  var b = browserify({ entries: 'test/client/**/*.js', debug: true });
+  return b.bundle()
+    .pipe(source('test/client/**/*.js'))
+    .pipe(buffer())
     .pipe(rename('client-test.js'))
     .pipe(gulp.dest('build'));
 });
 
 // Test Tasks
-gulp.task('test', ['lint-test', 'browserify-test'], function() {
+gulp.task('test', ['browserify-test'], function() {
   return gulp.src('test/client/runner.html')
     .pipe(phantomjs({ interface: 'bdd', reporter: 'spec' }));
 });
