@@ -2,7 +2,6 @@
 
 // Gulp Dependencies
 var gulp       = require('gulp');
-var rename     = require('gulp-rename');
 var sourcemaps = require('gulp-sourcemaps');
 var source     = require('vinyl-source-stream');
 var buffer     = require('vinyl-buffer');
@@ -31,24 +30,30 @@ gulp.task('lint-test', function() {
 
 // Browserify Tasks
 gulp.task('browserify-client', ['lint-client'], function() {
-  var b = browserify({ entries: 'client/index.js', debug: true });
+  var b = browserify({ entries: './client/index.js', debug: true });
   return b.bundle()
-    .pipe(source('client/index.js'))
+    .on("error", function (err) {
+      console.log(err.toString());
+      this.emit("end");
+    })
+    .pipe(source('client.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({ loadMaps: true }))
-      .pipe(rename('client.js'))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('build'))
-    .pipe(gulp.dest('public/javascripts'));
+    .pipe(gulp.dest('build/'))
+    .pipe(gulp.dest('public/javascripts/'));
 });
 
 gulp.task('browserify-test', ['lint-test'], function() {
-  var b = browserify({ entries: 'test/client/**/*.js', debug: true });
+  var b = browserify({ entries: './test/client/app_spec.js', debug: true });
   return b.bundle()
-    .pipe(source('test/client/**/*.js'))
+    .on("error", function (err) {
+      console.log(err.toString());
+      this.emit("end");
+    })
+    .pipe(source("client-test.js"))
     .pipe(buffer())
-    .pipe(rename('client-test.js'))
-    .pipe(gulp.dest('build'));
+    .pipe(gulp.dest("build/"))
 });
 
 // Test Tasks
