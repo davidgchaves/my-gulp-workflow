@@ -29,5 +29,5 @@ $ ./node_modules/.bin/gulp
 $ ./node_modules/.bin/browserify
 ```
 
-but IMHO, alising both commands is the best choice.
+but IMHO, aliasing both commands is the best choice.
 
