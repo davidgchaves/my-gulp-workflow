@@ -19,7 +19,7 @@ This step is not necessary to run `gulp` or `browserify` commands.
 You can globally install both tools:
 
 ```
-$ node install -g gulp browserify
+$ npm install -g gulp browserify
 ```
 
 or explicitly use the locally installed versions:
